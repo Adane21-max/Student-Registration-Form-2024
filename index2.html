@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Registration Form - Step 1</title>
+<link rel="stylesheet" href="editor.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    input {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="container" id="step1">
+    <h2>Student Registration Form - Step 1</h2>
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" placeholder="Enter your first name">
+    <label for="fatherName">Father's Name:</label>
+    <input type="text" id="fatherName" placeholder="Enter your father's name">
+    <label for="grandfatherName">Grandfather's Name:</label>
+    <input type="text" id="grandfatherName" placeholder="Enter your grandfather's name">
+    <label for="motherName">Mother's Name:</label>
+    <input type="text" id="motherName" placeholder="Enter your mother's name">
+    <label for="birthDay">Birth Day:</label>
+    <input type="date" id="birthDay">
+    <label for="birthPlace">Birth Place:</label>
+    <input type="text" id="birthPlace" placeholder="Enter your birth place">
+    <label for="city">City:</label>
+    <input type="text" id="city" placeholder="Enter your city">
+    <button onclick="nextStep()">Next</button>
+</div>
+
+<div class="container" id="step2" style="display: none;">
+    <h2>Student Registration Form - Step 2</h2>
+    <label for="paymentMethod">Payment Method:</label>
+    <select id="paymentMethod">
+        <option value="telebirr">Telebirr - 96777</option>
+        <option value="cbe">CBE - 1000121</option>
+    </select>
+    <label for="payment">Registration Payment ($50):</label>
+    <input type="file" id="payment" accept="image/*">
+    <button onclick="registerStudent()">Register</button>
+</div>
+
+<div class="container" id="confirmation" style="display: none;">
+    <h2>🎉 Registration Successful! 🎉</h2>
+    <p>Congratulations, [First Name]! 🌟 You are now officially part of our student community at [School Name]. Get ready to embark on an exciting learning journey filled with knowledge, growth, and fun!</p>
+    <p>Your classes will kick off on Monday, September 4, 2024. 📚 Mark your calendars and prepare to dive into a world of new opportunities and experiences!</p>
+    <p>We can't wait to see you shine and thrive in our vibrant learning environment. 🌟 Welcome aboard, [First Name]! 🚀</p>
+</div>
+
+<script>
+    function nextStep() {
+        const firstName = document.getElementById('firstName').value;
+        const fatherName = document.getElementById('fatherName').value;
+        const grandfatherName = document.getElementById('grandfatherName').value;
+        const motherName = document.getElementById('motherName').value;
+        const birthDay = document.getElementById('birthDay').value;
+        const birthPlace = document.getElementById('birthPlace').value;
+        const city = document.getElementById('city').value;
+
+        if (firstName && fatherName && grandfatherName && motherName && birthDay && birthPlace && city) {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        } else {
+            alert('Please fill in all fields in Step 1.');
+        }
+    }
+
+    function registerStudent() {
+        const firstName = document.getElementById('firstName').value;
+        const fatherName = document.getElementById('fatherName').value;
+        const grandfatherName = document.getElementById('grandfatherName').value;
+        const motherName = document.getElementById('motherName').value;
+        const birthDay = document.getElementById('birthDay').value;
+        const birthPlace = document.getElementById('birthPlace').value;
+        const city = document.getElementById('city').value;
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const paymentFile = document.getElementById('payment').files[0];
+
+        if (firstName && fatherName && grandfatherName && motherName && birthDay && birthPlace && city && paymentMethod && paymentFile) {
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = { firstName, fatherName, grandfatherName, motherName, birthDay, birthPlace, city, paymentMethod, payment: paymentFile.name };
+            students.push(student);
+            localStorage.setItem('students', JSON.stringify(students));
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('confirmation').style.display = 'block';
+            document.getElementById('confirmation').innerHTML = `
+                <h2>🎉 Registration Successful! 🎉</h2>
+                <p>Congratulations, ${firstName}! 🌟 You are now officially part of our student community at [School Name]. Get ready to embark on an exciting learning journey filled with knowledge, growth, and fun!</p>
+                <p>Your classes will kick off on Monday, September 4, 2024. 📚 Mark your calendars and prepare to dive into a world of new opportunities and experiences!</p>
+                <p>We can't wait to see you shine and thrive in our vibrant learning environment. 🌟 Welcome aboard, ${firstName}! 🚀</p>
+            `;
+        } else {
+            alert('Please fill in all fields and upload the payment receipt.');
+        }
+    }
+</script>
+</body>
+</html>
